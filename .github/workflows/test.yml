@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  golangci-main:
+  lint:
     name: lint
     runs-on: ubuntu-latest
     steps:
@@ -17,6 +17,7 @@ jobs:
         uses: reviewdog/action-golangci-lint@v1
   test:
     name: tests
+    needs: lint
     runs-on: ubuntu-latest
     steps:
       - name: Install Go
@@ -26,4 +27,4 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Test
-        run: make test
+        run: make test.ci
