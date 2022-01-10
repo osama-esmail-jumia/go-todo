@@ -23,14 +23,13 @@ func NewBadRequestResponse() *Error {
 }
 
 func NewValidationErrorResponse(err error) *Error {
-	switch err.(type) {
-	case validator.ValidationErrors:
+	if errors, ok := err.(validator.ValidationErrors); ok {
 		m := make(map[string]string)
-		for _, err := range err.(validator.ValidationErrors) {
+		for _, err := range errors {
 			m[err.Field()] = err.Tag()
 		}
 		return NewErrorResponse(m)
-	default:
-		return NewBadRequestResponse()
 	}
+
+	return NewBadRequestResponse()
 }
