@@ -27,6 +27,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: copy .env
-        run: cp .env.exmple .env
+        run: cp .env.example .env
       - name: Test
         run: make test
