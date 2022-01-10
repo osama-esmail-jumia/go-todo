@@ -40,7 +40,14 @@ func NewTaskCreateRequest(c context.Context) (req TaskCreateRequest, err error) 
 
 func NewTaskUpdateRequest(c context.Context) (req TaskUpdateRequest, err error) {
 	err = c.Bind(&req)
+	if err != nil {
+		return
+	}
+
 	req.ID, err = strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return
+	}
 
 	err = validation.Validate().Struct(req)
 	return
