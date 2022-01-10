@@ -16,10 +16,13 @@ func TestTaskService_List(t *testing.T) {
 	repo := mock_repository.NewMockTaskRepository(ctrl)
 	service := NewTaskService(repo)
 	req := request.TaskListRequest{}
-	repo.EXPECT().List(0, 0, nil).Return([]*model.Task{
+	req.Limit = 1
+	req.Offset = 2
+	repo.EXPECT().List(1, 2, nil).Return([]*model.Task{
 		&model.Task{
 			Title:       "foo",
 			Description: "bar",
+			Completed:   true,
 		},
 	}, nil)
 	repo.EXPECT().Count(nil).Return(int64(5), nil)
@@ -81,7 +84,9 @@ func TestTaskService_List_ErrorWhenCallingList(t *testing.T) {
 	repo := mock_repository.NewMockTaskRepository(ctrl)
 	service := NewTaskService(repo)
 	req := request.TaskListRequest{}
-	repo.EXPECT().List(0, 0, nil).Return(nil, errors.New("error"))
+	req.Limit = 1
+	req.Offset = 2
+	repo.EXPECT().List(1, 2, nil).Return(nil, errors.New("error"))
 	repo.EXPECT().Count(nil).Times(0)
 	_, err := service.List(&req)
 	assert.Error(t, err)
@@ -93,7 +98,9 @@ func TestTaskService_List_ErrorWhenCallingCount(t *testing.T) {
 	repo := mock_repository.NewMockTaskRepository(ctrl)
 	service := NewTaskService(repo)
 	req := request.TaskListRequest{}
-	repo.EXPECT().List(0, 0, nil).Return([]*model.Task{
+	req.Limit = 1
+	req.Offset = 2
+	repo.EXPECT().List(1, 2, nil).Return([]*model.Task{
 		&model.Task{
 			Title:       "foo",
 			Description: "bar",

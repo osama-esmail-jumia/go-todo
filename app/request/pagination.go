@@ -3,18 +3,18 @@ package request
 import "go-todo/config"
 
 type paginationRequest struct {
-	limit  int `form:"limit"`
-	offset int `form:"offset"`
+	Limit  int `form:"limit"`
+	Offset int `form:"offset"`
 }
 
 func (req *paginationRequest) GetLimit() int {
-	if req.limit == 0 {
+	if req.Limit == 0 {
 		return config.Cfg().AppDefaultPageSize
 	}
 
-	return req.limit
+	return req.Limit
 }
 
 func (req *paginationRequest) GetOffset() int {
-	return req.offset
+	return req.Offset
 }

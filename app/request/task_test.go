@@ -14,8 +14,8 @@ func TestNewTaskListRequest(t *testing.T) {
 	completed := true
 	ctx.EXPECT().BindQuery(&TaskListRequest{}).DoAndReturn(func(req *TaskListRequest) error {
 		req.Completed = &completed
-		req.limit = 2
-		req.offset = 1
+		req.Limit = 2
+		req.Offset = 1
 		return nil
 	})
 	req, _ := NewTaskListRequest(ctx)
