@@ -1,0 +1,26 @@
+FROM golang:1.17 AS build
+
+WORKDIR /app
+
+COPY ./go.mod /app
+COPY ./go.sum /app
+
+RUN go mod download
+
+RUN go get -u github.com/swaggo/swag/cmd/swag
+
+RUN curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b $(go env GOROOT)/bin/
+RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.15.1/migrate.linux-amd64.tar.gz | tar xvz
+RUN mv migrate $(go env GOROOT)/bin/
+
+FROM build
+
+WORKDIR /app
+
+COPY . .
+
+RUN make init
+
+EXPOSE 5000
+
+ENTRYPOINT air

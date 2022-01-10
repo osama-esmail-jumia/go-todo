@@ -1,0 +1,152 @@
+basePath: /api/v1
+definitions:
+  request.TaskCreateRequest:
+    properties:
+      description:
+        type: string
+      title:
+        type: string
+    type: object
+  request.TaskUpdateRequest:
+    properties:
+      completed:
+        type: boolean
+      description:
+        type: string
+      title:
+        type: string
+    type: object
+  response.Error:
+    properties:
+      message:
+        type: string
+    type: object
+  response.TaskListResponse:
+    properties:
+      limit:
+        type: integer
+      offset:
+        type: integer
+      rows:
+        items:
+          $ref: '#/definitions/response.TaskResponse'
+        type: array
+      total:
+        type: integer
+    type: object
+  response.TaskResponse:
+    properties:
+      completed:
+        type: boolean
+      description:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: todo API in go
+  title: todo API
+  version: "1.0"
+paths:
+  /task:
+    get:
+      parameters:
+      - description: pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: pagination offset
+        in: query
+        name: offset
+        type: integer
+      - description: task status
+        in: query
+        name: completed
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.TaskListResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      tags:
+      - task
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: task body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request.TaskCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.TaskResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      tags:
+      - task
+  /task/{id}:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: task body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request.TaskUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.TaskResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      tags:
+      - task
+swagger: "2.0"
