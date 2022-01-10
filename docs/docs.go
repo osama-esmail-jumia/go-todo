@@ -179,6 +179,10 @@ var doc = `{
     "definitions": {
         "request.TaskCreateRequest": {
             "type": "object",
+            "required": [
+                "description",
+                "title"
+            ],
             "properties": {
                 "description": {
                     "type": "string"
@@ -190,6 +194,9 @@ var doc = `{
         },
         "request.TaskUpdateRequest": {
             "type": "object",
+            "required": [
+                "completed"
+            ],
             "properties": {
                 "completed": {
                     "type": "boolean"
@@ -205,9 +212,7 @@ var doc = `{
         "response.Error": {
             "type": "object",
             "properties": {
-                "message": {
-                    "type": "string"
-                }
+                "error": {}
             }
         },
         "response.TaskListResponse": {

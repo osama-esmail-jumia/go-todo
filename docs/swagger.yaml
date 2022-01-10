@@ -6,6 +6,9 @@ definitions:
         type: string
       title:
         type: string
+    required:
+    - description
+    - title
     type: object
   request.TaskUpdateRequest:
     properties:
@@ -15,11 +18,12 @@ definitions:
         type: string
       title:
         type: string
+    required:
+    - completed
     type: object
   response.Error:
     properties:
-      message:
-        type: string
+      error: {}
     type: object
   response.TaskListResponse:
     properties:
