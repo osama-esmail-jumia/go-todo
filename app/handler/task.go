@@ -36,13 +36,13 @@ type taskHandler struct {
 func (handler *taskHandler) List(context *gin.Context) {
 	req, err := request.NewTaskListRequest(context)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, response.NewErrorResponse("Bad request"))
+		context.JSON(http.StatusBadRequest, response.NewValidationErrorResponse(err))
 		return
 	}
 
 	resp, err := handler.service.List(&req)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, response.NewErrorResponse("Bad request"))
+		context.JSON(http.StatusBadRequest, response.NewBadRequestResponse())
 		return
 	}
 
@@ -61,13 +61,13 @@ func (handler *taskHandler) List(context *gin.Context) {
 func (handler *taskHandler) Create(context *gin.Context) {
 	req, err := request.NewTaskCreateRequest(context)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, response.NewErrorResponse("Bad request"))
+		context.JSON(http.StatusBadRequest, response.NewValidationErrorResponse(err))
 		return
 	}
 
 	resp, err := handler.service.Create(&req)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, response.NewErrorResponse("Bad request"))
+		context.JSON(http.StatusBadRequest, response.NewBadRequestResponse())
 		return
 	}
 
@@ -87,13 +87,13 @@ func (handler *taskHandler) Create(context *gin.Context) {
 func (handler *taskHandler) Update(context *gin.Context) {
 	req, err := request.NewTaskUpdateRequest(context)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, response.NewErrorResponse("Bad request"))
+		context.JSON(http.StatusBadRequest, response.NewValidationErrorResponse(err))
 		return
 	}
 
 	resp, err := handler.service.Update(&req)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, response.NewErrorResponse("Bad request"))
+		context.JSON(http.StatusBadRequest, response.NewErrorResponse(err))
 		return
 	}
 

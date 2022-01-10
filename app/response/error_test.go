@@ -9,5 +9,5 @@ import (
 func TestNewErrorResponse(t *testing.T) {
 	resp := NewErrorResponse("foo")
 
-	assert.Equal(t, resp.Message, "foo")
+	assert.Equal(t, resp.Error, "foo")
 }

@@ -2,6 +2,7 @@ package request
 
 import (
 	"go-todo/context"
+	"go-todo/pkg/validation"
 	"strconv"
 )
 
@@ -11,15 +12,15 @@ type TaskListRequest struct {
 }
 
 type TaskCreateRequest struct {
-	Title       string
-	Description string
+	Title       string `validate:"required"`
+	Description string `validate:"required"`
 }
 
 type TaskUpdateRequest struct {
 	ID          int `json:"-"`
 	Title       string
 	Description string
-	Completed   bool
+	Completed   bool `validate:"required"`
 }
 
 func NewTaskListRequest(c context.Context) (req TaskListRequest, err error) {
@@ -29,11 +30,18 @@ func NewTaskListRequest(c context.Context) (req TaskListRequest, err error) {
 
 func NewTaskCreateRequest(c context.Context) (req TaskCreateRequest, err error) {
 	err = c.Bind(&req)
+	if err != nil {
+		return
+	}
+
+	err = validation.Validate().Struct(req)
 	return
 }
 
 func NewTaskUpdateRequest(c context.Context) (req TaskUpdateRequest, err error) {
 	err = c.Bind(&req)
 	req.ID, err = strconv.Atoi(c.Param("id"))
+
+	err = validation.Validate().Struct(req)
 	return
 }
