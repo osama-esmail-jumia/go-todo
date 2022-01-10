@@ -30,10 +30,6 @@ test:
 	echo "Starting tests"
 	go test -cover ./...
 
-test.ci:
-	cp .env.exmple .env
-	make test
-
 # todo move repeated command to make command
 
 docker.migrate.up:
