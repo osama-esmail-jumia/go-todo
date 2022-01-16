@@ -1,12 +1,18 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"go-todo/config"
 	"go-todo/pkg/logger"
 	"go-todo/router"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"time"
 )
 
 func main() {
@@ -20,9 +26,26 @@ func main() {
 
 	router.InitRouter(app)
 
-	if err := app.Run(fmt.Sprintf(":%d", config.Cfg().AppPort)); err != nil {
-		panic(err)
+	srv := &http.Server{
+		Addr:    fmt.Sprintf(":%d", config.Cfg().AppPort),
+		Handler: app,
 	}
 
-	logger.Log().Printf("[info] start http server listening localhost:%d", config.Cfg().AppPort)
+	go func() {
+		if err := srv.ListenAndServe(); err != nil {
+			logger.Log().Printf("listen: %s\n", err)
+		}
+	}()
+
+	quit := make(chan os.Signal)
+	signal.Notify(quit, os.Interrupt)
+	<-quit
+	log.Println("shutting down gracefully, press Ctrl+C again to force")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatal("Server forced to shutdown: ", err)
+	}
+	log.Println("Server exiting")
 }
