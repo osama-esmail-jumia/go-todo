@@ -54,7 +54,7 @@ func (service *taskService) Update(req *request.TaskUpdateRequest) (*response.Ta
 		req.Title = task.Title
 	}
 
-	if req.Title == "" {
+	if req.Description == "" {
 		req.Description = task.Description
 	}
 

@@ -12,15 +12,15 @@ type TaskListRequest struct {
 }
 
 type TaskCreateRequest struct {
-	Title       string `validate:"required"`
-	Description string `validate:"required"`
+	Title       string `validate:"required,min=2,max=100"`
+	Description string `validate:"required,min=4,max=600"`
 }
 
 type TaskUpdateRequest struct {
-	ID          int `json:"-"`
-	Title       string
-	Description string
-	Completed   bool `validate:"required"`
+	ID          int    `json:"-"`
+	Title       string `validate:"omitempty,min=2,max=100"`
+	Description string `validate:"omitempty,min=4,max=600"`
+	Completed   bool   `validate:"required"`
 }
 
 func NewTaskListRequest(c context.Context) (req TaskListRequest, err error) {

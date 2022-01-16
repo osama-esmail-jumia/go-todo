@@ -1,7 +1,9 @@
 package response
 
 import (
+	"fmt"
 	"github.com/go-playground/validator/v10"
+	"strings"
 )
 
 const (
@@ -26,7 +28,7 @@ func NewValidationErrorResponse(err error) *Error {
 	if errors, ok := err.(validator.ValidationErrors); ok {
 		m := make(map[string]string)
 		for _, err := range errors {
-			m[err.Field()] = err.Tag()
+			m[err.Field()] = strings.Trim(fmt.Sprintf("%s %s", err.Tag(), err.Param()), " ")
 		}
 		return NewErrorResponse(m)
 	}

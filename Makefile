@@ -52,6 +52,6 @@ sh:
 
 # todo connect to mysql inside the container to be independent
 db:
-	mysql -h ${DB_HOST} -P ${DB_PORT} --protocol=tcp -u ${DB_USER} -p${DB_PASSWORD}
+	mysql -h localhost -P ${DB_PORT} --protocol=tcp -u ${DB_USER} -p${DB_PASSWORD}
 
 init: swag

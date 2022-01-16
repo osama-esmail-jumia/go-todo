@@ -71,7 +71,7 @@ func (handler *taskHandler) Create(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusOK, resp)
+	context.JSON(http.StatusCreated, resp)
 }
 
 // Update CreateTask @Summary create a new task
