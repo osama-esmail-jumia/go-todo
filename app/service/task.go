@@ -7,6 +7,9 @@ import (
 	"go-todo/pkg/logger"
 )
 
+const NOT_FOUND_ERROR = "record not found"
+const DUPLICATE_ERROR = "Duplicate"
+
 type TaskService interface {
 	List(req *request.TaskListRequest) (*response.TaskListResponse, error)
 	Create(req *request.TaskCreateRequest) (*response.TaskResponse, error)

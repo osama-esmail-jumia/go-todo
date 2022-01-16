@@ -7,7 +7,9 @@ import (
 )
 
 const (
-	BAD_REQUEST_MESSAGE = "Bad request"
+	BAD_REQUEST_MESSAGE     = "Bad request"
+	NOT_FOUND_MESSAGE       = "Not found"
+	DUPLICATE_TITLE_MESSAGE = "Title should be unique"
 )
 
 type Error struct {
@@ -18,6 +20,10 @@ func NewErrorResponse(err interface{}) *Error {
 	return &Error{
 		Error: err,
 	}
+}
+
+func NewNotFoundResponse() *Error {
+	return NewErrorResponse(NOT_FOUND_MESSAGE)
 }
 
 func NewBadRequestResponse() *Error {

@@ -3,8 +3,12 @@ definitions:
   request.TaskCreateRequest:
     properties:
       description:
+        maxLength: 600
+        minLength: 4
         type: string
       title:
+        maxLength: 100
+        minLength: 2
         type: string
     required:
     - description
@@ -15,8 +19,12 @@ definitions:
       completed:
         type: boolean
       description:
+        maxLength: 600
+        minLength: 4
         type: string
       title:
+        maxLength: 100
+        minLength: 2
         type: string
     required:
     - completed

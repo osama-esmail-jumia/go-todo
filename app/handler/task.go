@@ -7,6 +7,7 @@ import (
 	"go-todo/app/response"
 	"go-todo/app/service"
 	"net/http"
+	"strings"
 )
 
 type TaskHandler interface {
@@ -67,6 +68,10 @@ func (handler *taskHandler) Create(context *gin.Context) {
 
 	resp, err := handler.service.Create(&req)
 	if err != nil {
+		if strings.Contains(err.Error(), service.DUPLICATE_ERROR) {
+			context.JSON(http.StatusBadRequest, response.NewErrorResponse(response.DUPLICATE_TITLE_MESSAGE))
+			return
+		}
 		context.JSON(http.StatusBadRequest, response.NewBadRequestResponse())
 		return
 	}
@@ -93,7 +98,15 @@ func (handler *taskHandler) Update(context *gin.Context) {
 
 	resp, err := handler.service.Update(&req)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, response.NewErrorResponse(err))
+		if err.Error() == service.NOT_FOUND_ERROR {
+			context.JSON(http.StatusNotFound, response.NewNotFoundResponse())
+			return
+		}
+		if strings.Contains(err.Error(), service.DUPLICATE_ERROR) {
+			context.JSON(http.StatusBadRequest, response.NewErrorResponse(response.DUPLICATE_TITLE_MESSAGE))
+			return
+		}
+		context.JSON(http.StatusBadRequest, response.NewBadRequestResponse())
 		return
 	}
 
